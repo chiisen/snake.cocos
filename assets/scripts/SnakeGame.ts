@@ -1,4 +1,4 @@
-import { _decorator, Component, Node, UITransform, Graphics, Label, Color, Vec3, input, Input, KeyCode, EventKeyboard, tween, Tween, Button } from 'cc';
+import { _decorator, Component, Node, UITransform, Graphics, Label, Color, Vec3, input, Input, KeyCode, EventKeyboard, tween, Tween, Button, Sprite } from 'cc';
 const { ccclass, property } = _decorator;
 
 enum GameState {
@@ -83,6 +83,12 @@ initGame() {
             const transform = this.gameArea.getComponent(UITransform);
             if (transform) {
                 transform.setContentSize(width, height);
+            }
+            
+            // 🔴 禁用 Sprite（沒有 spriteFrame，會遮住 Graphics）
+            const sprite = this.gameArea.getComponent(Sprite);
+            if (sprite) {
+                sprite.enabled = false;  // 或 sprite.node.active = false;
             }
         }
         
