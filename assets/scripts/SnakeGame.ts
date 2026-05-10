@@ -95,7 +95,8 @@ initGame() {
         // 創建邊框節點（最底層）
         this.borderNode = new Node('Border');
         this.borderNode.parent = this.node;
-        this.borderNode.setPosition(0, 0, -10);  // 🔴 z-index = -10（最底層）
+        this.borderNode.layer = 1073741824;  // 🔴 DEFAULT 層（確保Camera可見）
+        this.borderNode.setPosition(0, 0, -10);  // z-index = -10（最底層）
         
         const borderTransform = this.borderNode.addComponent(UITransform);
         borderTransform.setContentSize(width, height);
@@ -112,10 +113,10 @@ initGame() {
         borderGraphics.rect(-halfW, -halfH, width, height);
         borderGraphics.fill();
         
-        // 邊框 (亮綠色，10像素寬) - 🔴更明顯
-        borderGraphics.strokeColor = new Color(50, 255, 100, 255);
+        // 邊框 (白色，10像素寬)
+        borderGraphics.strokeColor = new Color(255, 255, 255, 255);  // 🔴 白色
         borderGraphics.lineWidth = 10;
-        borderGraphics.rect(-halfW + 5, -halfH + 5, width - 10, height - 10);
+        borderGraphics.rect(-halfW, -halfH, width, height);  // 🔴 從外圈繪製
         borderGraphics.stroke();
         
         this.createFoodNode();
