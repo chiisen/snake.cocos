@@ -101,6 +101,16 @@ curl -X POST http://127.0.0.1:3000/mcp \
   -d '{"method":"tools/call","params":{"name":"component_attach_script","arguments":{"nodeUuid":"xxx"}}}'
 ```
 
+## OpenCode MCP 設定
+C:\Users\【用戶名稱】\.opencode\opencode.json
+```json
+"cocos-creator": {
+  "type": "remote",
+  "url": "http://127.0.0.1:3000/mcp",
+  "enabled": true
+}
+```
+
 ## 版本信息
 
 - **Cocos Creator**: 3.8.8
