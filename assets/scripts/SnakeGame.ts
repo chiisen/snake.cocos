@@ -92,11 +92,11 @@ initGame() {
             }
         }
         
-        // 創建邊框節點（最底層）
+        // 創建邊框節點
         this.borderNode = new Node('Border');
         this.borderNode.parent = this.node;
-        this.borderNode.layer = 1073741824;  // 🔴 DEFAULT 層（確保Camera可見）
-        this.borderNode.setPosition(0, 0, -10);  // z-index = -10（最底層）
+        this.borderNode.layer = 1073741824;  // DEFAULT 層
+        this.borderNode.setPosition(0, 0, -5);  // z-index = -5
         
         const borderTransform = this.borderNode.addComponent(UITransform);
         borderTransform.setContentSize(width, height);
@@ -104,8 +104,8 @@ initGame() {
         const borderGraphics = this.borderNode.addComponent(Graphics);
         const halfW = width / 2;
         const halfH = height / 2;
+        const borderWidth = 8;  // 8像素寬邊框
         
-        // 清除舊繪製
         borderGraphics.clear();
         
         // 背景 (深灰)
@@ -113,11 +113,24 @@ initGame() {
         borderGraphics.rect(-halfW, -halfH, width, height);
         borderGraphics.fill();
         
-        // 邊框 (白色，10像素寬)
-        borderGraphics.strokeColor = new Color(255, 255, 255, 255);  // 🔴 白色
-        borderGraphics.lineWidth = 10;
-        borderGraphics.rect(-halfW, -halfH, width, height);  // 🔴 從外圈繪製
-        borderGraphics.stroke();
+        // 🔴 用fill()繪製4條白色粗線（比stroke()更可靠）
+        borderGraphics.fillColor = new Color(255, 255, 255, 255);
+        
+        // 上邊框
+        borderGraphics.rect(-halfW, halfH - borderWidth, width, borderWidth);
+        borderGraphics.fill();
+        
+        // 下邊框
+        borderGraphics.rect(-halfW, -halfH, width, borderWidth);
+        borderGraphics.fill();
+        
+        // 左邊框
+        borderGraphics.rect(-halfW, -halfH, borderWidth, height);
+        borderGraphics.fill();
+        
+        // 右邊框
+        borderGraphics.rect(halfW - borderWidth, -halfH, borderWidth, height);
+        borderGraphics.fill();
         
         this.createFoodNode();
     }
