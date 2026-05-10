@@ -92,11 +92,11 @@ initGame() {
             }
         }
         
-        // 創建邊框節點
+        // 創建邊框節點（放在 Canvas 上，z-index 最前）
         this.borderNode = new Node('Border');
-        this.borderNode.parent = this.node;
+        this.borderNode.parent = this.gameArea.parent;  // 與 GameArea 同層（Canvas）
         this.borderNode.layer = 1073741824;  // DEFAULT 層
-        this.borderNode.setPosition(0, 0, -5);  // z-index = -5
+        this.borderNode.setPosition(0, 0, 1);  // z-index = 1（在 GameArea 前面）
         
         const borderTransform = this.borderNode.addComponent(UITransform);
         borderTransform.setContentSize(width, height);
@@ -108,29 +108,13 @@ initGame() {
         
         borderGraphics.clear();
         
-        // 背景 (深灰)
-        borderGraphics.fillColor = new Color(35, 35, 35, 255);
+        // 直接繪製白色邊框（不繪製背景）
+        borderGraphics.strokeColor = new Color(255, 255, 255, 255);  // 白色
+        borderGraphics.lineWidth = borderWidth;
+        
+        // 用 stroke()繪製外框
         borderGraphics.rect(-halfW, -halfH, width, height);
-        borderGraphics.fill();
-        
-        // 🔴 用fill()繪製4條白色粗線（比stroke()更可靠）
-        borderGraphics.fillColor = new Color(255, 255, 255, 255);
-        
-        // 上邊框
-        borderGraphics.rect(-halfW, halfH - borderWidth, width, borderWidth);
-        borderGraphics.fill();
-        
-        // 下邊框
-        borderGraphics.rect(-halfW, -halfH, width, borderWidth);
-        borderGraphics.fill();
-        
-        // 左邊框
-        borderGraphics.rect(-halfW, -halfH, borderWidth, height);
-        borderGraphics.fill();
-        
-        // 右邊框
-        borderGraphics.rect(halfW - borderWidth, -halfH, borderWidth, height);
-        borderGraphics.fill();
+        borderGraphics.stroke();
         
         this.createFoodNode();
     }
