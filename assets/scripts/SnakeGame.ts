@@ -1,4 +1,4 @@
-import { _decorator, Component, Node, UITransform, Graphics, Label, Color, Vec3, input, Input, KeyCode } from 'cc';
+import { _decorator, Component, Node, UITransform, Graphics, Label, Color, Vec3, input, Input, KeyCode, EventKeyboard } from 'cc';
 const { ccclass, property } = _decorator;
 
 @ccclass('SnakeGame')
@@ -81,9 +81,7 @@ export class SnakeGame extends Component {
     }
     
     setupInput() {
-        input.on(Input.EventType.KEY_DOWN, (event: any) => {
-            this.handleKey(event.keyCode);
-        }, this);
+        input.on(Input.EventType.KEY_DOWN, this.onKeyDown, this);
         
         if (typeof window !== 'undefined') {
             this.keyHandler = (e: KeyboardEvent) => {
@@ -92,6 +90,10 @@ export class SnakeGame extends Component {
             };
             window.addEventListener('keydown', this.keyHandler);
         }
+    }
+    
+    private onKeyDown(event: EventKeyboard) {
+        this.handleKey(event.keyCode);
     }
     
     handleKey(code: number) {
@@ -335,7 +337,7 @@ export class SnakeGame extends Component {
     }
     
     onDestroy() {
-        input.off(Input.EventType.KEY_DOWN, this.handleKey, this);
+        input.off(Input.EventType.KEY_DOWN, this.onKeyDown, this);
         
         if (typeof window !== 'undefined' && this.keyHandler) {
             window.removeEventListener('keydown', this.keyHandler);
