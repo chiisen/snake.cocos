@@ -75,7 +75,7 @@ export class SnakeGame extends Component {
         }
     }
     
-    initGame() {
+initGame() {
         const width = this.gridWidth * this.cellSize;
         const height = this.gridHeight * this.cellSize;
         
@@ -86,24 +86,30 @@ export class SnakeGame extends Component {
             }
         }
         
+        // 創建邊框節點（最底層）
         this.borderNode = new Node('Border');
         this.borderNode.parent = this.node;
-        this.borderNode.setPosition(0, 0, -1);
+        this.borderNode.setPosition(0, 0, -10);  // 🔴 z-index = -10（最底層）
         
         const borderTransform = this.borderNode.addComponent(UITransform);
-        borderTransform.setContentSize(width + 20, height + 20);
+        borderTransform.setContentSize(width, height);
         
         const borderGraphics = this.borderNode.addComponent(Graphics);
         const halfW = width / 2;
         const halfH = height / 2;
         
-        borderGraphics.fillColor = new Color(30, 30, 30, 255);
+        // 清除舊繪製
+        borderGraphics.clear();
+        
+        // 背景 (深灰)
+        borderGraphics.fillColor = new Color(35, 35, 35, 255);
         borderGraphics.rect(-halfW, -halfH, width, height);
         borderGraphics.fill();
         
-        borderGraphics.strokeColor = new Color(0, 200, 100, 255);
-        borderGraphics.lineWidth = 8;
-        borderGraphics.rect(-halfW, -halfH, width, height);
+        // 邊框 (亮綠色，10像素寬) - 🔴更明顯
+        borderGraphics.strokeColor = new Color(50, 255, 100, 255);
+        borderGraphics.lineWidth = 10;
+        borderGraphics.rect(-halfW + 5, -halfH + 5, width - 10, height - 10);
         borderGraphics.stroke();
         
         this.createFoodNode();
@@ -483,7 +489,7 @@ export class SnakeGame extends Component {
     updateUI() {
         if (this.scoreLabel) {
             this.scoreLabel.string = `Score: ${this.score}`;
-            this.scoreLabel.node.setPosition(new Vec3(0, 350, 0));
+            this.scoreLabel.node.setPosition(new Vec3(-250, 320, 0));  // 🔴 左上角
         }
         
         this.updateHighScoreDisplay();
@@ -492,7 +498,7 @@ export class SnakeGame extends Component {
     updateHighScoreDisplay() {
         if (this.highScoreLabel) {
             this.highScoreLabel.string = `High Score: ${this.highScore}`;
-            this.highScoreLabel.node.setPosition(new Vec3(0, -350, 0));
+            this.highScoreLabel.node.setPosition(new Vec3(0, -320, 0));  // 🔴 底部中央
         }
     }
     
